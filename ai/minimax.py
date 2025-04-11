@@ -1,46 +1,47 @@
+from functools import lru_cache
+
+# Entry point for minimax with alpha-beta arguments 
 def minimax(current_total, max_move, is_ai_turn, alpha, beta):
-    """
-    Recursive Minimax algorithm with Alpha-Beta Pruning.
-    AI tries to force the opponent to say 30.
-    Returns a score: +1 if AI wins, -1 if AI loses.
-    """
-    if current_total >= 30:
-        return -1 if is_ai_turn else 1
+    return _minimax_cached(current_total, max_move, is_ai_turn)
 
+# Cached version of minimax to avoid redundant recursive calls
+@lru_cache(maxsize=None)
+def _minimax_cached(current_total, max_move, is_ai_turn):
+    # Base case: if total reaches or exceeds 30, the player who just moved loses
+    return 1 if is_ai_turn else -1 if current_total >= 30 else None
+
+    # AI's turn (maximize score)
     if is_ai_turn:
-        max_eval = float('-inf')
+        best_score = float('-inf')
         for move in range(1, max_move + 1):
             if current_total + move <= 30:
-                eval = minimax(current_total + move, max_move, False, alpha, beta)
-                max_eval = max(max_eval, eval)
-                alpha = max(alpha, eval)
-                if beta <= alpha:
-                    break
-        return max_eval
+                # Recursively simulate the player's response
+                score = _minimax_cached(current_total + move, max_move, False)
+                best_score = max(best_score, score)
+        return best_score
     else:
-        min_eval = float('inf')
+        # Player's turn (minimize score from AI's perspective)
+        best_score = float('inf')
         for move in range(1, max_move + 1):
             if current_total + move <= 30:
-                eval = minimax(current_total + move, max_move, True, alpha, beta)
-                min_eval = min(min_eval, eval)
-                beta = min(beta, eval)
-                if beta <= alpha:
-                    break
-        return min_eval
+                # Recursively simulate the AI's response
+                score = _minimax_cached(current_total + move, max_move, True)
+                best_score = min(best_score, score)
+        return best_score
 
-
+# Public function that the AI uses to select the best move
 def get_best_ai_move(current_total, max_move):
-    """
-    Returns the best possible move for the AI using Minimax.
-    """
     best_score = float('-inf')
     best_move = 1
 
+    # Try all valid moves and evaluate them using minimax
     for move in range(1, max_move + 1):
         if current_total + move <= 30:
             score = minimax(current_total + move, max_move, False, float('-inf'), float('inf'))
+            print(f"AI considers move {move} → score: {score}")
             if score > best_score:
                 best_score = score
                 best_move = move
 
+    print(f"AI chooses best move: {best_move} with score: {best_score}")
     return best_move

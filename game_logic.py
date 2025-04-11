@@ -9,7 +9,7 @@ def play_game():
     print(f"🔢 This game's max move per turn is: {max_move}")
 
     total = 0
-    player_turn = True  # True = User, False = AI
+    player_turn = True  
 
     while total < 30:
         print(f"\nCurrent total: {total}")
