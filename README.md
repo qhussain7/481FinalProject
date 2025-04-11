@@ -1,23 +1,22 @@
 # 🎮 Count to 30 AI Game (Minimax Edition)
 
-This project is a strategic number game built for an Artificial Intelligence course. Players take turns adding numbers to a running total — whoever says **30** loses.
+This project is a strategic number game built for an Artificial Intelligence course. Players take turns adding numbers to a running total — **whoever says 30 loses**.
 
-The AI opponent is powered by the **Minimax algorithm with Alpha-Beta Pruning**, ensuring optimal decision-making each turn.
+The AI opponent is powered by the **Minimax algorithm with Alpha-Beta Pruning and memoization**, ensuring near-perfect decision-making each turn. You can also play against the AI interactively using a **Tkinter GUI**.
 
 ---
 
 ## 🧠 How the Game Works
 
-- At the **start of each game**, a random max move (between **2 and 5**) is chosen.
-- On each turn, the player or AI can choose any number from **1 up to that max**.
-- The number is added to a running total starting from **0**.
-- The player who reaches **30** **loses the game**.
-- After each game, players can **choose to play again**.
+- At the start of each game, a **max move limit** is selected (2 to 5).
+- On each turn, the player and AI can choose any number from **1 to max_move**.
+- That number is added to a **running total starting from 0**.
+- The first to say **30** **loses the game**.
+- The game continues until one player hits 30, then offers a replay.
 
 ---
 
 ## 🧱 Folder Structure
-
 ```
 count_to_30_ai/
 │
@@ -49,6 +48,15 @@ count_to_30_ai/
 
 ```bash
 python main.py
+```
+Graphical Tkinter version
+
+```bash
+python gui.py
+```
+Benchmark the AI (Minimax vs Random over 10,000 games):
+```bash
+python evaluate_ai.py
 ```
 
 To run the unit tests:
